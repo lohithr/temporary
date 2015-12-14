@@ -1,0 +1,198 @@
+<div ng-include="'views/admin/admin-nav.html'"></div>
+<!-- Floating Button -->
+<div class="fixed-action-btn" style="bottom: 45px; left: 24px;">
+	<a class="btn-floating btn-large red" href="#addeventsection">
+		<i class="large mdi-content-add"></i>
+	</a>
+</div>
+
+<!-- Modal Structure -->
+<div id="deleteEventModal" class="modal">
+	<div class="modal-content">
+		<h4>Delete Event</h4>
+		<p>Are you sure want to delete the event?</p>
+	</div>
+	<div class="modal-footer">
+		<a href="#!" class=" modal-action waves-effect waves-green btn-flat" ng-click="deleteYes(eventToBeDeleted)">Yes</a>
+		<a href="#!" class=" modal-action waves-effect waves-green btn-flat" ng-click="deleteNo()">No</a>
+	</div>
+</div>
+
+
+<section class="admin-show-events section scrollspy" id="showeventsection">
+	<div>
+		<h2 class="heading">Events</h2>
+		<div class="row">
+			<div class="input-field col s12">
+				<i class="mdi-action-search prefix"></i>
+				<input id="label_labnamesearch" type="text" ng-model="namequery" />
+				<label for="label_labnamesearch">Search by Name:- </label>
+			</div>
+		</div>
+		<table class="hoverable centered responsive-table">
+			<thead>
+				<tr class="event-table">
+					<th class="">Index</th>
+					<th class=""><a href="" ng-click="predicate = 'name'; reverse=!reverse">Name <span><i class="fa" ng-class="{'fa-long-arrow-down':!reverse, 'fa-long-arrow-up':reverse}" ></i></span> </a></th>
+					<th class=""><a href="" ng-click="predicate = 'type'; reverse=!reverse">Type <span><i class="fa" ng-class="{'fa-long-arrow-down':!reverse, 'fa-long-arrow-up':reverse}" ></i></span> </a></th>
+					<th class="">Publish</th>
+					<th class="">Delete</th>
+					<th class="">Edit</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="event-table" ng-repeat="event in events | orderBy:predicate:reverse | filter:namequery">
+
+					<td>{{$index+1}}</td>
+					<!-- <td>{{event.name}}</td> -->
+					<td><input type="text" name="name" ng-model="event.name" class="validate"/></td>
+					<td>{{event.type}}</td>
+					<td>
+						<div class="switch">
+							<label>
+								<i class="mdi-navigation-close"></i>
+								<input type="checkbox" ng-model="event.publish" ng-change="changePublish(event)">
+								<span class="lever"></span>
+								<i class="mdi-navigation-check"></i>
+							</label>
+						</div>
+					</td>
+					<td><a class="waves-effect waves-light btn red modal-trigger" ng-click="deleteEvent(event._id)"><i class="mdi-action-delete left"></i>Delete</a></td>
+					<td><a class="waves-effect waves-light btn" ng-href="/adminmedd/events/edit/{{event._id}}">Edit</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>
+<div class="divider"></div>
+<section class="section scrollspy" id="addeventsection">
+	<div class="container">
+		<h2>Create a new event</h2>
+		<div class="row">
+			<form name="newEvent" id="newevent" class="col s12 card" ng-submit="addEvent()">
+				<div class="row">
+					<div class="input-field col s6">
+						<i class="mdi-action-spellcheck prefix"></i>
+						<input id="label_eventname" type="text" name="name" ng-model="event.name" class="validate" required/>
+						<label for="label_eventname">Name</label>
+					</div>
+					<div class="input-field col s6">
+						<i class="mdi-action-spellcheck prefix"></i>
+						<input id="label_eventtype" type="text" name="type" ng-model="event.type" class="validate" required/>
+						<label for="label_eventtype">Type</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s6">
+						<i class="mdi-action-spellcheck prefix"></i>
+						<!-- <input id="label_eventdate" /> -->
+						<input type="date" class="datepicker" ng-model="event.date" name="date" >
+						<label for="label_eventdate"></label>
+					</div>
+					<div class="input-field col s6">
+						<i class="mdi-editor-attach-money prefix"></i>
+						<input id="label_eventprice" type="number" min="0" name="price" ng-model="event.price" class="validate" />
+						<label for="label_eventprice">Price</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s6">
+						<i class="mdi-action-alarm-on prefix"></i>
+						<input id="label_eventtimefrom" type="text" name="timefrom" ng-model="event.timefrom" class="validate"/>
+						<label for="label_eventtimefrom">Time - From</label>
+					</div>
+					<div class="input-field col s6">
+						<i class="mdi-action-alarm-off prefix"></i>
+						<input id="label_eventtimeto" type="text" name="timeto" ng-model="event.timeto" class="validate"/>
+						<label for="label_eventtimeto">Time - To</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s12">
+						<i class="mdi-maps-place prefix"></i>
+						<input id="label_eventaddress" type="text" name="address" ng-model="event.address" class="validate" required/>
+						<label for="label_eventaddress">Address</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s12">
+						<i class="mdi-editor-insert-comment prefix"></i>
+						<textarea id="label_eventdescription" name="description" ng-model="event.description" class="materialize-textarea validate"></textarea>
+						<label for="label_eventdescription">Description</label>
+					</div>
+				</div>
+					<!-- SubEvents code- anurag -->
+				<!-- <div class="row">
+					<h3 class="center">SubEvents</h3>
+					<div ng-repeat="subevent in pushSubEvent track by $index" class="col s7">
+						<div class="input-field col s10" >
+
+							<i class="mdi-action-spellcheck prefix"></i>
+							<input type="text" id="subevent_{{$index}}" name="subevent_{{$index}}" ng-model="subevent.subeventid" />
+							<input type="text" id="subeventname_{{$index}}" name="subeventname_{{$index}}" ng-model="subevent.name" />
+							<input type="text" id="subeventprice_{{$index}}" name="subeventprice_{{$index}}" ng-model="subevent.price" />				
+							<label for="subevent_{{$index}}">SubEvent</label>
+						</div>
+
+
+						<div class="input-field col s2">
+							<div class="btn red" ng-click="removeSubEvent($index, pushSubEvent)">
+								<i class="tiny mdi-action-delete"></i>
+							</div>
+						</div>
+						<ui-select multiple ng-model="event.testgroups" theme="select2" style="width: 100%;">
+							<ui-select-match placeholder="Select testgroups">{{$item.name}}</ui-select-match>
+							<ui-select-choices repeat="testgroup in testgroups | propsFilter: {name: $select.search}">
+								<div ng-bind-html="testgroup.name | highlight: $select.search"></div>
+								<small>
+									<strong>_id</strong>: {{testgroup._id}}
+									<br>
+								</small>
+							</ui-select-choices>
+						</ui-select>
+						<br>
+						<br>
+						<ui-select multiple ng-model="event.labs" theme="select2" style="width: 100%;">
+							<ui-select-match placeholder="Select labs">{{$item.name}}</ui-select-match>
+							<ui-select-choices repeat="lab in labs | propsFilter: {name: $select.search}">
+								<div ng-bind-html="lab.name | highlight: $select.search"></div>
+							</ui-select-choices>
+						</ui-select>						
+
+					</div>
+					<div class="input-field col s2">
+						<div class="btn" ng-click="insertSubEvent()">
+							<i class="tiny mdi-content-add"></i>
+						</div>
+					</div>
+				</div> -->	
+				<div class="row">
+					<h3 class="center">Testgroups</h3>
+						<!-- select the testgroups -->
+						<div class="col s2"></div>
+						<div class="col s8">
+						<ui-select multiple  ng-model="event.testgroups" theme="select2" style="width: 100%;">
+							<ui-select-match placeholder="Select testgroups">{{$item.name}}</ui-select-match>
+							<ui-select-choices repeat="testgroup in testgroups | propsFilter: {name: $select.search}">
+								<div ng-bind-html="testgroup.name | highlight: $select.search"></div>
+								<small>
+									<strong>_id</strong>: {{testgroup._id}}
+									<br>
+								</small>
+							</ui-select-choices>
+						</ui-select></div>
+						<div class="col s2"></div>
+				</div>	
+
+				<div class="row">
+					<div class="input-field col s12">
+						<button class="btn waves-effect waves-light right" type="submit">
+							Submit
+							<i class="mdi-content-send right"></i>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</section>

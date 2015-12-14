@@ -1,0 +1,85 @@
+<div ng-include="'views/admin/admin-nav.html'"></div>
+<section class="section scrollspy" id="addeventsection">
+	<div class="container">
+		<h2>Edit the event</h2>
+		<div class="row">
+			<form name="newEvent" id="newevent" class="col s12 card" ng-submit="updateEvent()">
+				<div class="row">
+					<div class="input-field col s6">
+						<i class="mdi-action-spellcheck prefix"></i>
+						<input id="label_eventname" type="text" name="name" ng-model="event.name" class="validate" required/>
+						<label for="label_eventname">Name</label>
+					</div>
+					<div class="input-field col s6">
+						<i class="mdi-action-spellcheck prefix"></i>
+						<input id="label_eventtype" type="text" name="type" ng-model="event.type" class="validate" required/>
+						<label for="label_eventtype">Type</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s6">
+						<i class="mdi-action-spellcheck prefix"></i>
+						<!-- <input id="label_eventdate" /> -->
+						<input type="date" class="datepicker" ng-model="event.date" name="date" >
+						<label for="label_eventdate"></label>
+					</div>
+					<div class="input-field col s6">
+						<i class="mdi-editor-attach-money prefix"></i>
+						<input id="label_eventprice" type="number" min="0" name="price" ng-model="event.price" class="validate" />
+						<label for="label_eventprice">Price</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s6">
+						<i class="mdi-action-alarm-on prefix"></i>
+						<input id="label_eventtimefrom" type="text" name="timefrom" ng-model="event.timefrom" class="validate"/>
+						<label for="label_eventtimefrom">Time - From</label>
+					</div>
+					<div class="input-field col s6">
+						<i class="mdi-action-alarm-off prefix"></i>
+						<input id="label_eventtimeto" type="text" name="timeto" ng-model="event.timeto" class="validate"/>
+						<label for="label_eventtimeto">Time - To</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s12">
+						<i class="mdi-maps-place prefix"></i>
+						<input id="label_eventaddress" type="text" name="address" ng-model="event.address" class="validate" required/>
+						<label for="label_eventaddress">Address</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s12">
+						<i class="mdi-editor-insert-comment prefix"></i>
+						<textarea id="label_eventdescription" name="description" ng-model="event.description" class="materialize-textarea validate"></textarea>
+						<label for="label_eventdescription">Description</label>
+					</div>
+				</div>
+				<div class="row">
+					<h3 class="center">Testgroups</h3>
+						<!-- select the testgroups -->
+						<div class="col s2"></div>
+						<div class="col s8">
+						<ui-select multiple  ng-model="event.testgroups" theme="select2" style="width: 100%;">
+							<ui-select-match placeholder="Select testgroups">{{$item.name}}</ui-select-match>
+							<ui-select-choices repeat="testgroup in testgroups | propsFilter: {name: $select.search}">
+								<div ng-bind-html="testgroup.name | highlight: $select.search"></div>
+								<small>
+									<strong>_id</strong>: {{testgroup._id}}
+									<br>
+								</small>
+							</ui-select-choices>
+						</ui-select></div>
+						<div class="col s2"></div>
+				</div>	
+				<div class="row">
+					<div class="input-field col s12">
+						<button class="btn waves-effect waves-light right" type="submit">Submit
+							<i class="mdi-content-send right"></i>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</section>
