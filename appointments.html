@@ -1,0 +1,61 @@
+<div ng-include="'views/labpanel/labpanel-nav.html'"></div>
+<section class="admin-trans">
+	<h3 class="center">Appointments</h3>
+	<div class="row card">
+		<div class="col s12">
+			<div class="row">
+				<div class="input-field col s12">
+					<i class="mdi-action-search prefix"></i>
+					<input id="label_labnamesearch" type="text" ng-model="namequery" />
+					<label for="label_labnamesearch">Search by Name:- </label>
+				</div>
+			</div>
+			<div class="col s12 center">
+				<table class="hoverable centered responsive-table">
+					<thead>
+						<tr>
+							<th class="">Index</th>
+							<th>Booking ID</th>
+							<th>Date / Time</th>
+							<th class=""><a href="" ng-click="predicate = 'name'; reverse=!reverse">Patient Name<span><i class="fa" ng-class="{'fa-long-arrow-down':!reverse, 'fa-long-arrow-up':reverse}" ></i></span> </a></th>
+							<th>Testgroup</th>
+							<th>Amount</th>
+							<th>Tested</th>
+							<th>Fill Report</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="transaction in diagnosticsTransactions | orderBy:'-timestamp.booking' | filter:namequery">
+<!-- 						<tr ng-repeat="transaction in diagnosticsTransactions | orderBy:predicate:reverse | filter:namequery"> -->
+							<td>{{$index+1}}</td>
+							<td>{{transaction.coupon}}</td>
+							<!-- <td>{{transaction.booking_time.date + '-' + transaction.booking_time.time}}</td> -->
+							<td>{{transaction.date_time}}</td>
+							<td>{{transaction.patient.name}}</td>
+							<td><div ng-repeat="test in transaction.diagnostics.tests | filter:namequery">{{test.name}}</div></td>
+							<td>{{transaction.diagnostics.price.user}}</td>
+							<td>
+								<div class="switch">
+									<label>
+										<i class="mdi-navigation-close"></i>
+										<input type="checkbox" ng-model="transaction.redeemed" ng-change="changePublish(pharmacy)">
+										<span class="lever"></span>
+										<i class="mdi-navigation-check"></i>
+									</label>
+								</div>
+							</td>
+							<td><a href="/labpanel/appointments/fill/{{transaction._id}}" class="btn teal">Fill</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+<!-- 			<div class="row">
+				<div class="input-field col s12">
+					<a class="btn waves-effect waves-light right" href="/api/transactions/download/diagnostics" target="_blank">
+						Diagnostics CSV<i class="mdi-content-send right"></i>
+					</a>
+				</div>
+			</div> -->
+		</div>
+	</div>
+</section>
