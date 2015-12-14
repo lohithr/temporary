@@ -2002,8 +2002,6 @@ function callback(response, status) {
 		name : '',
 		description : '',
 		cover : '',
-		lab : '',
-		testgroup : '',
 		timestamp : {}
 	}
 	$scope.insertSubEvent = function () {

@@ -182,6 +182,19 @@
 							</ui-select-choices>
 						</ui-select></div>
 						<div class="col s2"></div>
+				</div>
+				<div class="row">
+					<h3 class="center">Labs</h3>
+					    <div class="col s2"></div>
+						<div class="col s8">
+						<ui-select multiple ng-model="event.lab" theme="select2" style="width: 100%;">
+							<ui-select-match placeholder="Select labs">{{$item.name}}</ui-select-match>
+							<ui-select-choices repeat="lab in labs | propsFilter: {name: $select.search}">
+								<div ng-bind-html="lab.name | highlight: $select.search"></div>
+							</ui-select-choices>
+						</ui-select></div>
+						<div class="col s2"></div>
+
 				</div>	
 
 				<div class="row">
